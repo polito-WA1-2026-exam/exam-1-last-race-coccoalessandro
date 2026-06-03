@@ -152,8 +152,9 @@
 
 ## Users Credentials
 
-- player1, password123
-- player2, password456
+- player1, password123 (some games played)
+- player2, password456 (some games played)
+- player3, password789 (no games played)
 
 ## Use of AI Tools
 Briefly describe whether you used any AI tools (e.g., ChatGPT, GitHub Copilot, Claude) while working on this project, for which purposes (e.g., clarifying concepts, debugging, generating code), and how you verified or adapted their output.
