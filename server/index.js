@@ -3,6 +3,7 @@ import express from "express";
 import morgan from 'morgan';
 import cors from 'cors';
 import * as dao from './dao.js';
+import * as gameLogic from './gameLogic.js';
 
 import passport from "passport";
 import LocalStrategy from 'passport-local';
@@ -114,6 +115,91 @@ app.get("/api/ranking", async (req, res) => {
     res.status(500).end();
   }
 })
+
+
+// 3. GET /api/game/setup - Start a new game
+
+app.get("/api/game/setup", isLoggedIn, async (req, res) => {
+  try {
+    const [stations, segments] = await Promise.all([
+      dao.getStations(),
+      dao.getSegments()
+    ]);
+
+    // Generate start and destination stations
+    const mission = gameLogic.generateStartDestStations(stations, segments);
+
+    res.json({
+      startStation: mission.start,
+      destStation: mission.dest,
+      minDistance: mission.minDistance,
+      segments: segments
+    });
+
+  } catch (err) {
+    console.error("Error during game setup: ", err);
+    res.status(500).end();
+  }
+})
+
+
+// 4. POST /api/game/execute - Validates the route and compute the new score
+
+app.post("/api/game/execute", isLoggedIn, async (req, res) => {
+  try {
+    const {route, startStationId, destStationId} = req.body;
+
+    const [allSegments, allEvents] = await Promise.all([
+      dao.getSegments(),
+      dao.getEvents()
+    ]);
+
+    const validation = gameLogic.validateRoute(route, startStationId, destStationId, allSegments);
+
+    if (!validation.valid) {
+      // invalid route
+      await dao.saveGame(req.user.id, 0);
+      
+      return res.status(400).json({
+        success: false,
+        reason: validation.reason,
+        finalScore: 0
+      })
+    }
+
+    // valid route
+    let currentCoins = 20;
+    const journeySteps = [];
+
+    for (const segment of route) {
+      const randomEvent = allEvents[Math.floor(Math.random() * allEvents.length)];
+      currentCoins += randomEvent.effect;
+
+      journeySteps.push({
+        segment: segment,
+        event: randomEvent,
+        coinsAfterStep: currentCoins,
+      });
+    }
+
+    if (currentCoins < 0) {
+      currentCoins = 0;
+    }
+
+    await dao.saveGame(req.user.id, currentCoins);
+
+    res.json({
+      success: true,
+      journeySteps: journeySteps,
+      finalScore: currentCoins
+    })
+
+  } catch (err) {
+    console.error("Error during the game execution: ", err);
+    res.status(500).end();
+  }
+})
+
 
 
 // activate the server
