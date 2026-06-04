@@ -1,0 +1,43 @@
+GET http://localhost:3001/api/network
+
+###
+
+GET http://localhost:3001/api/ranking
+
+### 
+
+POST http://localhost:3001/api/sessions
+content-type: application/json
+
+{
+    "username": "player1",
+    "password": "password123"
+}
+
+###
+
+GET http://localhost:3001/api/sessions/current
+
+###
+
+DELETE http://localhost:3001/api/sessions/current
+
+###
+
+GET http://localhost:3001/api/game/setup
+
+###
+
+POST http://localhost:3001/api/game/execute
+Content-Type: application/json
+
+{
+    "startStationId": 7,
+    "destStationId": 11,
+    "route": [
+        {"stationA": 12, "stationB": 10, "lineId": 4},
+        {"stationA": 10, "stationB": 7, "lineId": 3},
+        {"stationA": 7, "stationB": 9, "lineId": 3},
+        {"stationA": 9, "stationB": 8, "lineId": 3}
+    ]
+}

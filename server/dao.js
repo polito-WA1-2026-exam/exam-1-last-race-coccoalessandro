@@ -18,10 +18,10 @@ export const getUser = (username, password) => {
             } else {
                 const user = {id: row.id, username: row.username};
 
-                crypto.scrypt(password, row.salt, 16, (err, hashedPassword) => {
+                crypto.scrypt(password, row.salt, 64, (err, hashedPassword) => {
                     if (err) reject(err);
                     if (!crypto.timingSafeEqual(Buffer.from(row.password, "hex"), hashedPassword)) {
-                        resolve (password); // WRONG PASSWORD
+                        resolve (false); // WRONG PASSWORD
                     } else {
                         resolve (user); // LOGIN OK
                     }
