@@ -9,7 +9,7 @@ function Header(props) {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
             <Container>
-                <Navbar.Brand as={Link} to="/">Race the Rails</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">Last Race</Navbar.Brand>
                 <Nav className="me-auto">
                     <Nav.Link as={Link} to="/">Instructions</Nav.Link>
                     {user.id && <Nav.Link as={Link} to="/play">Play</Nav.Link>}

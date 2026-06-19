@@ -10,7 +10,7 @@ import Instructions from './components/Instructions.jsx';
 import Ranking from './components/Ranking.jsx';
 
 import UserContext from './contexts/UserContext.js';
-import {checkSession} from './api/auth.js';
+import {checkSession, doLogout, doLogin} from './api/auth.js';
 
 import './App.css'
 
@@ -44,7 +44,7 @@ function App() {
         <Routes>
           <Route path = '/'element = {<MainLayout handleLogout = {handleLogout}/>}>
             <Route index element = {<InstructionsView />}/>
-            <Route path = 'login' element = {<LoginView handleLogin = {handleLogin}/>}/>
+            <Route path = 'login' element = {<LoginView doLogin = {handleLogin}/>}/>
             <Route path = 'play' element = {<PlayView />}/>
             <Route path = 'ranking' element = {<RankingView/>}/>
             <Route path = 'error' element = {<h1>"Something went wrong"</h1>}/>
