@@ -3,14 +3,14 @@ import { useContext, useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { Navigate, Outlet, Route, Routes, useNavigate } from 'react-router';
 
-import Header from '.components/Header.jsx';
-import LoginForm from '.components/LoginForm.jsx';
-import GameManager from '.components/GameManager.jsx';
-import Instructions from '.components/Instructions.jsx';
-import Ranking from '.components/Ranking.jsx';
+import Header from './components/Header.jsx';
+import LoginForm from './components/LoginForm.jsx';
+import GameManager from './components/GameManager.jsx';
+import Instructions from './components/Instructions.jsx';
+import Ranking from './components/Ranking.jsx';
 
 import UserContext from './contexts/UserContext.js';
-import {checkSession} from '.api/auth.js';
+import {checkSession} from './api/auth.js';
 
 import './App.css'
 

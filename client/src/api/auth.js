@@ -1,4 +1,4 @@
-export async function doLogin(username, password) {
+async function doLogin(username, password) {
     const response = await fetch("http://localhost:3001/api/sessions", {
         method: 'POST',
         body: JSON.stringify( {
@@ -19,7 +19,7 @@ export async function doLogin(username, password) {
     }
 }
 
-export async function doLogout() {
+async function doLogout() {
     const response = await fetch("http://localhost:3001/api/sessions/current", {
         method: 'DELETE',
         credentials: 'include'
@@ -32,7 +32,7 @@ export async function doLogout() {
     }
 }
 
-export async function checkSession() {
+async function checkSession() {
     const response = await fetch("http://localhost:3001/api/sessions/current", {
         credentials: 'include'
     })
