@@ -40,7 +40,6 @@ function App() {
 
   return (
     <UserContext.Provider value = {user}>
-      <Container>
         <Routes>
           <Route path = '/'element = {<MainLayout handleLogout = {handleLogout}/>}>
             <Route index element = {<InstructionsView />}/>
@@ -51,7 +50,6 @@ function App() {
             <Route path = '*' element = {<Navigate to = "/"/>}/>
           </Route>
         </Routes>
-      </Container>
     </UserContext.Provider>
   )
 }
@@ -60,7 +58,9 @@ function MainLayout(props) {
   return (
     <>
       <Header handleLogout = {props.handleLogout}/>
-      <Outlet />
+      <Container>
+        <Outlet />
+      </Container>
     </>
   )
 }

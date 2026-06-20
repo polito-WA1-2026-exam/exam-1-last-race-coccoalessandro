@@ -96,9 +96,10 @@ export const getEvents = () => {
 export const getRanking = () => {
     return new Promise((resolve, reject) => {
         const sql = `
-        SELECT users.username, games.score
+        SELECT users.username, MAX(games.score) as score
         FROM users, games
         WHERE users.id = games.user_id
+        GROUP BY users.username
         ORDER BY games.score DESC
         `
         db.all(sql, [], (err, rows) => {

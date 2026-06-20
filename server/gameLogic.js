@@ -64,7 +64,7 @@ export const validateRoute = (route, startStationId, destStationId, allSegments)
 
     // get the interchange stations
     const stationLines = {};
-    allSegments.forEach(seg => {
+    allSegments.forEach(seg => { 
         if (!stationLines[seg.stationA]) {
             stationLines[seg.stationA] = new Set(); // use a Set to filter automatically the duplicates
         }

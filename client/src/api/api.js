@@ -1,7 +1,9 @@
 
 async function getNetwork() {
     try {
-        const response = await fetch('http://localhost:3001/api/network');
+        const response = await fetch('http://localhost:3001/api/network', {
+            credentials: 'include'
+        });
 
         if (response.ok) {
             const network = await response.json();
@@ -17,7 +19,9 @@ async function getNetwork() {
 
 async function getRanking() {
     try {
-        const response = await fetch('http://localhost:3001/api/ranking');
+        const response = await fetch('http://localhost:3001/api/ranking', {
+            credentials: 'include'
+        });
 
         if (response.ok) {
             const ranking = await response.json();

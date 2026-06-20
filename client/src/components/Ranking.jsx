@@ -9,7 +9,7 @@ function Ranking() {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        async function fetchRanking() {
+        const fetchRanking = async () => {
             try {
                 const data = await getRanking();
                 setRanking(data);

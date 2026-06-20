@@ -88,7 +88,7 @@ app.delete("/api/sessions/current", (req, res) => {
 // GAME ROUTES
 
 // 1. GET /api/network
-app.get('/api/network', async (req, res) => {
+app.get('/api/network', isLoggedIn, async (req, res) => {
   try {
     const [stations, lines, segments] = await Promise.all([
       dao.getStations(),
@@ -106,7 +106,7 @@ app.get('/api/network', async (req, res) => {
 
 // 2. GET /api/ranking
 
-app.get("/api/ranking", async (req, res) => {
+app.get("/api/ranking", isLoggedIn, async (req, res) => {
   try {
     const ranking = await dao.getRanking();
     res.json(ranking);
@@ -126,7 +126,7 @@ app.get("/api/game/setup", isLoggedIn, async (req, res) => {
       dao.getSegments()
     ]);
 
-    // Generate start and destination stations
+    // Generates start and destination stations
     const mission = gameLogic.generateStartDestStations(stations, segments);
 
     res.json({
