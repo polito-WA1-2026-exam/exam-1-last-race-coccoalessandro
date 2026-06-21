@@ -50,7 +50,7 @@ function RouteBuilder({network, mission, route, setRoute, onConfirm}) {
                 </div>
 
                 <div className="mb-4">
-                    <h6 className="text-muted text-uppercase mb-2">Your current route:</h6>
+                    <h6 className="text-muted mb-2">YOUR CURRENT ROUTE:</h6>
                     {route.length === 0 ? (
                         <p className="text-muted fst-italic">No segments selected yet. Click on the segments below to build your route!</p>
                     ) : (

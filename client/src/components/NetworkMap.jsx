@@ -43,7 +43,7 @@ function NetworkMap({network, showLines}) {
                             const colorVariant = getLineColor(line.id);
                             
                             return (
-                                <div className="d-flex flex-wrap align-items-center justify-content-center fs-5">
+                                <div key={line.id} className="d-flex flex-wrap align-items-center justify-content-center fs-5">
                                     {chain.map((stationId, index) => (
                                         <div key={index} className="d-flex align-items-center mb-2">
                                             <Badge
