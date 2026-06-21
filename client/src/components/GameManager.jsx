@@ -1,4 +1,4 @@
-import {Container, Button, Alert, Badge} from 'react-bootstrap';
+import {Container, Button, Alert, Badge, Col, Card, Row} from 'react-bootstrap';
 import {useState, useEffect} from 'react';
 import {getNetwork, setupGame, executeMove} from '../api/api.js';
 import NetworkMap from './NetworkMap.jsx';
@@ -67,16 +67,17 @@ function GameManager() {
     }
 
     const handleConfirmRoute = async (finalRoute) => {
-        setPhase('execution');
         try {
             const result = await executeMove(mission.startStation.id, mission.destStation.id, finalRoute);
             setGameResult(result);
+            setPhase('execution');
         } catch (err) {
             setGameResult({
                 success: false,
                 reason: err.message || "Invalid or incomplete route",
                 finalScore: 0
             });
+            setPhase('result')
         }
     }
 
@@ -132,7 +133,7 @@ function GameManager() {
                     {!gameResult ? (
                         <div className="text-center mt-5">
                             <div className="spinner-border text-primary" role="status"></div>
-                            <p className="mt-3 text-muted">Validating route with the control tower...</p>
+                            <p className="mt-3 text-muted">Validating your route...</p>
                         </div>
                     ) : (
                         <ExecutionViewer
@@ -146,13 +147,51 @@ function GameManager() {
 
             {/* PHASE 4 - RESULT */}
             {phase === 'result' && (
-                <div className="text-center mt-5">
-                    <h4>Game ended.</h4>
-                    <p className="fs-5 mt-3">
-                        Final score: <Badge bg="success" className="fs-5">{gameResult?.finalScore || 0} coins</Badge>
-                    </p>
-                    <Button variant="primary" size="lg" className="mt-4" onClick={handlePlayAgain}>Play again</Button>
-                </div>
+                <Row className="justify-content-center mt-5">
+                    <Col md={8} lg={6}>
+                        <Card className={`shadow-lg border-0 rounded-4 overflow-hidden`}>
+                            <Card.Header className={`bg-${gameResult.success ? 'success': 'danger'} text-white text-center py-3`}>
+                                <h3 className="mb-0 fw-bold">
+                                    {gameResult.success ? '🎉 Mission Accomplished! 🎉' : '💥 Mission Failed! 💥'}
+                                </h3>
+                            </Card.Header>
+
+                            <Card.Body className="p-5 text-center bg-light">
+                                <Card.Title className="fs-4 mb-4 text-muted">
+                                    {gameResult.success
+                                        ? "You successfully reached your destination!"
+                                        : "Something went wrong along the way..."
+                                    }
+                                </Card.Title>
+
+                                <div className="my-4 p-4 bg-white rounded-3 shadow-sm border">
+                                    <p className="text-uppercase fw-bold text-muted mb-2">Final Score</p>
+                                    <span className={`display-1 fw-bold text-${gameResult?.success ? 'success' : 'danger'}`}>
+                                        {gameResult.finalScore}
+                                    </span>
+                                    <span className="fs-4 text-muted ms-2">coins</span>
+                                </div>
+
+                                {gameResult.reason && (
+                                    <Alert variant="danger" className="mb-4 shadow-sm">
+                                        {gameResult.reason}
+                                    </Alert>
+                                )}
+
+                                <div className="d-grid mt-4">
+                                    <Button 
+                                        variant={gameResult.success ? "success" : "primary"} 
+                                        size="lg" 
+                                        className="py-3 fw-bold rounded-pill shadow-sm"
+                                        onClick={handlePlayAgain}
+                                    >
+                                        <i className="bi bi-arrow-clockwise me-2"></i> Play Again
+                                    </Button>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
             )}
             
         </Container>

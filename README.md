@@ -148,7 +148,8 @@
 
 ## Screenshot
 
-![Screenshot](./img/screenshot.jpg)
+![Screenshot](/screenshots/general_ranking.png)
+![Screenshot](/screenshots/game.png)
 
 ## Users Credentials
 

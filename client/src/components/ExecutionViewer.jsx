@@ -39,19 +39,6 @@ function ExecutionViewer({gameResult, network, onComplete}) {
             </Card.Header>
 
             <Card.Body>
-                {/* CASE 1: INVALID ROUTE */}
-                {!isRouteValid ? (
-                    <div className="text-center py-4">
-                        <Alert variant="danger">
-                            <Alert.Heading>Invalid or Incomplete Route</Alert.Heading>
-                            <p>The route you entered does not comply with the subway network rules or you did not arrive at your destination.</p>
-                            <hr />
-                            <p className="mb-0 fs-5 fw-bold">
-                                You lost all your coins! Final score: 0
-                            </p>
-                        </Alert>
-                    </div>
-                ) : (
                     <div>
                         <div className="text-center mb-4">
                             <h5>Start with 20 coins</h5>
@@ -93,7 +80,6 @@ function ExecutionViewer({gameResult, network, onComplete}) {
                             </div>
                         )}
                     </div>
-                )}
 
                 <div className="text-center mt-4">
                     <Button
