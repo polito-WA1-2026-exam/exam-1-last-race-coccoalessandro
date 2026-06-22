@@ -54,31 +54,30 @@ async function setupGame() {
 
 
 async function executeMove(startStationId, destStationId, route) {
-    try {
-        const response = await fetch('http://localhost:3001/api/game/execute', {
-            method: 'POST',
-            body: JSON.stringify({
-                startStationId: startStationId,
-                destStationId: destStationId,
-                route: route
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include'
-        })
+    const response = await fetch('http://localhost:3001/api/game/execute', {
+        method: 'POST',
+        body: JSON.stringify({
+            startStationId: startStationId,
+            destStationId: destStationId,
+            route: route
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+    })
 
-        if (response.ok) {
-            const result = await response.json();
-            return result
-        } else {
-            const errorData = await response.json().catch(() => ({}))
-            const errorMessage = errorData.reason || "HTTP error in executeMove, code=" + response.status;
-            throw new Error(errorMessage);
-        }
-    } catch (ex) {
-        throw new Error("Network error", {cause: ex})
+    if (response.ok) {
+        const result = await response.json();
+        return result
+    } 
+
+    if (response.status === 400) {
+        const errorData = await response.json();
+        throw new Error(errorData.reason);
     }
+
+    throw new Error("Network error");
 }
 
 export { getNetwork, getRanking, setupGame, executeMove }
