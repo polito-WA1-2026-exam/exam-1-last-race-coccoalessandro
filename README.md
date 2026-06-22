@@ -158,5 +158,5 @@
 - player3, password789 (no games played)
 
 ## Use of AI Tools
-Briefly describe whether you used any AI tools (e.g., ChatGPT, GitHub Copilot, Claude) while working on this project, for which purposes (e.g., clarifying concepts, debugging, generating code), and how you verified or adapted their output.
-If you did not use any AI tools, simply state so.
+During the development of this project I used AI (Gemini) strictly as a styling and layout assistant. I prompted the AI to suggest appropriate React-Bootstrap classes (such as Card styling) to imporve the visual presentation and structure of the User interface. 
+I manually reviewed all the suggested classes, cross-referenced them with the official React-Bootstrap documentation to ensure they were not deprecated and tested the visual outcome in the browser.
