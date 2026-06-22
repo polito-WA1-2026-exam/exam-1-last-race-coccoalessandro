@@ -56,12 +56,6 @@ export const validateRoute = (route, startStationId, destStationId, allSegments)
         return {valid: false, reason: "The start station must be the one assigned by the system"};
     }
 
-    // correct destStation
-    let lastSeg = route[route.length - 1];
-    if (lastSeg.stationA !== destStationId && lastSeg.stationB !== destStationId) {
-        return {valid: false, reason: "The destination station must be the one assigned by the system"}
-    }
-
     // get the interchange stations
     const stationLines = {};
     allSegments.forEach(seg => { 
@@ -116,6 +110,10 @@ export const validateRoute = (route, startStationId, destStationId, allSegments)
         }
 
         currentStation = nextStation;
+    }
+
+    if (currentStation !== destStationId) {
+        return {valid: false, reason: "The destination station must be the one assigned by the system"};
     }
 
     return ({valid: true});

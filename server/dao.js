@@ -100,7 +100,7 @@ export const getRanking = () => {
         FROM users, games
         WHERE users.id = games.user_id
         GROUP BY users.username
-        ORDER BY games.score DESC
+        ORDER BY score DESC
         `
         db.all(sql, [], (err, rows) => {
             if (err) reject(err);

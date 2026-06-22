@@ -3,10 +3,10 @@
 
 ## React Client Application Routes
 
-- Route `/`: Home page. Shows game instructions for anonymous users and a welcome page for logged-in users.
+- Route `/`: Home page. Shows game instructions for both anonymous and logged in users.
 - Route `/login`: Login page.
 - Route `/play`: Core game route. Accessible only to authenticated users. Manages the 4 game phases (Setup, Planning, Execution. Result)
-- Route `/ranking`: Displays the general ranking with the scores of all registered users.
+- Route `/ranking`: Displays the general ranking with the best scores of each registered user.
 - Route `*`: NotFound: fallback 404 page.
 
 ## API Server
@@ -58,9 +58,7 @@
   Request: DELETE /api/sessions/current
 
   Response:
-  {
-    "message": "Logout successful"
-  }
+  (empty body)
   ```
 
 - GET `/api/network`
@@ -79,7 +77,7 @@
   ```
 
 - GET `/api/game/setup`
-  - Response 200: Randomly assigned starting and destination stations IDs
+  - Response 200: Randomly assigned starting and destination stations, minimum distance and available segments
   - Example:
 
   ```json
@@ -87,28 +85,35 @@
 
   Response:
   {
-    "startStationId": 1, 
-    "destinationStationId": 8
+    "startStation": {"id": 10, "name": "Garibaldi"},
+    "destStation": {"id": 6, "name": "Università"},
+    "minDistance": 3,
+    "segments": [{"stationA": 1, "stationB": 2, "lineId": 1}, ...]
   }
   ```
 
 - POST `/api/game/execute`
-  - Body: {"route": [integer]} --> array of stationIds representing the planned route
+  - Body: {"route": [object], "startStationId": integer, "destStationId": integer} --> array of segments representing the planned route
   - Response 200: execution details including steps, events encountered and score
   - Example
 
   ```json
   Request: POST /api/game/execute
   {
-    "route": [1, 2, 7, 8]
+    "route": [{"stationA": 1, "stationB": 2, "lineId": 1}, ...],
+    "startStationId": 1,
+    "destStationId": 8
   }
   
   Response:
   {
-    "isValid": true,
-    "steps": [
-      {"from": 1, "to": 2, "event": "Kind passenger", "coins": 21},
-      ...
+    "success": true,
+    "journeySteps": [
+      {
+      "segment": {"stationA": 1, "stationB": 2, "lineId": 1},
+      "event": {"description": "Kind passenger", "effect": 1},
+      "coinsAfterStep": 21
+      }
     ],
     "finalScore": 21
   }
@@ -144,7 +149,8 @@
 - `GameManager`: The core component in the /play route. 
 - `NetworkMap`: A visual representation component used in both Setup and Planning phases.
 - `RouteBuilder`: component used in the planning phase. Allows the user to build its own route.
-- `ExecutionViewer`: Dispalys the step-by-step journey, the random events and the updating coin balance
+- `ExecutionViewer`: Dispalys the step-by-step journey, the random events and the updating coin balance.
+- `Ranking`: Displays the general ranking.
 
 ## Screenshot
 
@@ -158,5 +164,5 @@
 - player3, password789 (no games played)
 
 ## Use of AI Tools
-During the development of this project I used AI (Gemini) strictly as a styling and layout assistant. I prompted the AI to suggest appropriate React-Bootstrap classes (such as Card styling) to imporve the visual presentation and structure of the User interface. 
+During the development of this project I used AI (Gemini) strictly as a styling and layout assistant. I prompted the AI to suggest appropriate React-Bootstrap classes (such as Card styling) to improve the visual presentation and structure of the User interface. 
 I manually reviewed all the suggested classes, cross-referenced them with the official React-Bootstrap documentation to ensure they were not deprecated and tested the visual outcome in the browser.

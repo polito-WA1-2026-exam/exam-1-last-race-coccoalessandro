@@ -27,7 +27,7 @@ function ExecutionViewer({gameResult, network, onComplete}) {
 
     const getStationName = (id) => {
         const station = stations.find(s => s.id === id);
-        return station.name;
+        return station ? station.name : "Unknown station";
     }
 
     const isAnimationComplete = !isRouteValid || visibleSteps === steps.length;

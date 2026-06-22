@@ -8,7 +8,7 @@ function NetworkMap({network, showLines}) {
 
     const getStationName = (id) => {
         const station = stations.find(s => s.id === id);
-        return station.name;
+        return station ? station.name : "Unknown station";
     }
 
     const getLineColor = (id) => {

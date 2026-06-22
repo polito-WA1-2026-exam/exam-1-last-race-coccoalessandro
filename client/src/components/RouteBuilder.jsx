@@ -8,7 +8,7 @@ function RouteBuilder({network, mission, route, setRoute, onConfirm}) {
 
     const getStationName = (id) => {
         const station = stations.find(s => s.id === id);
-        return station.name;
+        return station ? station.name : "Unknown station";
     }
 
     const handleSegmentClick = (segment) => {
@@ -25,7 +25,7 @@ function RouteBuilder({network, mission, route, setRoute, onConfirm}) {
         const newStep = {
             stationA: segment.stationA,
             stationB: segment.stationB,
-            line_id: segment.lineId
+            lineId: segment.lineId
         };
 
         setRoute([...route, newStep]);
@@ -57,7 +57,7 @@ function RouteBuilder({network, mission, route, setRoute, onConfirm}) {
                         <div>
                             <div className="d-flex flex-wrap gap-2 align-items-center">
                                 {route.map((step, index) => (
-                                    <Badge key={index} bg="primary" className="p-2 fs-6text-dark-border">
+                                    <Badge key={index} bg="primary" className="p-2 fs-6 text-dark-border">
                                         {getStationName(step.stationA)} - {getStationName(step.stationB)}
                                     </Badge>
                                 ))}
