@@ -127,13 +127,17 @@ app.get("/api/game/setup", isLoggedIn, async (req, res) => {
     ]);
 
     // Generates start and destination stations
-    const mission = gameLogic.generateStartDestStations(stations, segments);
+    const {start, dest} = gameLogic.generateStartDestStations(stations, segments);
+
+    req.session.currentMission = {
+      startStationId: start.id,
+      destStationId: dest.id,
+      startTime: Date.now()
+    }
 
     res.json({
-      startStation: mission.start,
-      destStation: mission.dest,
-      minDistance: mission.minDistance,
-      segments: segments
+      startStation: start,
+      destStation: dest
     });
 
   } catch (err) {
@@ -147,12 +151,29 @@ app.get("/api/game/setup", isLoggedIn, async (req, res) => {
 
 app.post("/api/game/execute", isLoggedIn, async (req, res) => {
   try {
-    const {route, startStationId, destStationId} = req.body;
 
     const [allSegments, allEvents] = await Promise.all([
       dao.getSegments(),
       dao.getEvents()
     ]);
+
+    const mission = req.session.currentMission;
+
+    if (!mission) {
+      return res.status(400).json({reason: "No active game setup found. Please start a new game."});
+    }
+
+    const timeElapsed = Date.now() - mission.startTime;
+
+    if (timeElapsed > 95000) {
+      req.session.currentMission = null;
+      return res.status(400).json({reason: "Time expired! You took more than 90 seconds."});
+    }
+
+    const startStationId = mission.startStationId;
+    const destStationId = mission.destStationId;
+    const route = req.body.route;
+
 
     const validation = gameLogic.validateRoute(route, startStationId, destStationId, allSegments);
 
@@ -187,6 +208,8 @@ app.post("/api/game/execute", isLoggedIn, async (req, res) => {
     }
 
     await dao.saveGame(req.user.id, currentCoins);
+
+    req.session.currentMission = null;
 
     res.json({
       success: true,
